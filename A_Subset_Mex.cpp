@@ -1,7 +1,10 @@
+/*
+'Cause I love the adrenaline in my veins
+*/
 #include <bits/stdc++.h>
 
-//#include <ext/pb_ds/assoc_container.hpp>
-//#include <ext/pb_ds/tree_policy.hpp>
+//#include <ext/pb_ds/assoc_container.hpp> 
+//#include <ext/pb_ds/tree_policy.hpp> 
 
 using namespace std;
 //using namespace __gnu_pbds;
@@ -38,19 +41,19 @@ const ld pi = acosl(-1.0);
 bool isPrime[100005];
 ll fact[100005];
 
-bool sbs(const pair<ll, ll> &a, const pair<ll, ll> b) { return a.second > b.second; }
+bool sbs(const pair<ll,ll>& a, const pair<ll,ll> b)    {return a.second > b.second;}
 
 //comparator fxn in stl sort should return false if swap is to be done
 //return a.first<b.first if first ke according increasing in comparator
 
 void seive()
 {
-    memset(isPrime, true, sizeof(isPrime));
+    memset(isPrime,true,sizeof(isPrime));
     isPrime[1] = false;
     isPrime[2] = true;
-    for (int i = 2; i * i <= 100005; i++)
+    for(int i = 2 ; i * i <= 100005 ; i++)
     {
-        for (int j = i * i; j <= 100005; j += i)
+        for(int j = i * i; j <= 100005 ; j += i)
         {
             isPrime[j] = false;
         }
@@ -60,8 +63,8 @@ void seive()
 void factorial()
 {
     fact[0] = fact[1] = 1;
-    for (int i = 2; i < 100005; i++)
-        fact[i] = (fact[i - 1] % mod * i % mod) % mod;
+    for(int i = 2 ; i < 100005 ; i++)
+        fact[i] = (fact[i-1]%mod*i%mod)%mod;
 }
 
 ll factor[200001];
@@ -116,84 +119,37 @@ long long nCrModPFermat(long long n, int r, int p)
     return (fac[n] * modInverse(fac[r], p) % p * modInverse(fac[n - r], p) % p) % p;
 }
 
+
 void solve()
 {
-    ll n;
-    cin >> n;
-    string A, B;
-    cin >> A >> B;
-    vector<int> a(n), b(n), x(n);
-    rep(i, 0, n)
-    {
-        a[i] = A[i] - '0';
-        b[i] = B[i] - '0';
-        x[i] = a[i]^1;
+    int n;
+    cin>>n;
+    int occ[101];
+    memset(occ,0,sizeof occ);
+    rep(i,0,n){
+        int t;
+        cin>>t;
+        occ[t]++;
     }
-    ll l = 0, r = n - 1;
-    vector<int> ans;
-    bool flag = false, check = false;
-    pre(i, n - 1, 0)
-    {
-        //cout<<l<<" "<<r<<endl;
-        //cout<<a[3]<<endl;
-        if (flag)
-        {
-            a[l] = x[l];
-            //cout<<a[3]<<endl;
-            if (l != r)
-                a[r] = x[r];
-        }else{
-            a[l]=x[l]^1;
-            a[r]=x[r]^1;
-        }
-        //cout<<a[3]<<endl;
-        if (a[r] == b[i])
-        {
-            //cout<<i<<endl;
-            if (!check)
-                r--;
-            else
-                r++;
-        }
-        else
-        {
-            if (a[l] == b[i])
-            {
-                ans.push_back(1);
-                a[l] ^= 1;
-            }
-            if (a[r] != b[i])
-            {
-                ans.push_back(i + 1);
-                if (!check)
-                {
-                    l++;
-                    swap(l, r);
-                    flag = !flag;
-                    check = !check;
-                }
-                else
-                {
-                    l--;
-                    swap(l, r);
-                    flag = !flag;
-                    check = !check;
-                }
-            }
+    int f=-1,s=-1;
+    rep(i,0,101){
+        if(occ[i]==0){
+            if(f==-1)f=i;
+            if(s==-1)s=i;
+            break;
+        }else if(occ[i]==1){
+            if(s==-1)s=i;
         }
     }
-    cout << ans.size() << " ";
-    rep(i, 0, ans.size()) cout << ans[i] << " ";
-    cout << endl;
+    cout<<f+s<<endl;
 }
 
-int main()
-{
-    //	freopen("input.txt", "r", stdin);
-    //	freopen("output.txt", "w", stdout);
-    fast;
-    int t = 1;
-    cin >> t;
-    while (t--)
-        solve();
+int main(){
+	//	freopen("input.txt", "r", stdin);
+	//	freopen("output.txt", "w", stdout);
+	fast;
+	int t=1;
+	cin>>t;
+	while(t--)
+		solve();
 }
